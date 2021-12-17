@@ -1,0 +1,9 @@
+---
+# Playbook to install VirtualBox on the system
+
+- hosts: all
+  roles:
+  - linux_server
+  - docker_engine
+  - virtualbox
+  - vagrant

@@ -1,0 +1,23 @@
+---
+# Tasks file for virtualbox role
+
+# TODO: review & test https://github.com/amine7777/ansible-role-virtualbox
+
+- name: Install VirtualBox for Debian dists
+  block:
+    - name: Install GPG Agent
+      apt:
+        name: gpg-agent
+        state: present
+    - name: Add VirtualBox public key
+      apt_key:
+        url: "{{ virtualbox_apt_key }}"
+    - name: Add VirtualBox apt repository
+      apt_repository:
+        repo: "{{ virtualbox_apt_repo }}"
+      changed_when: false
+    - name: Install VirtualBox
+      apt:
+        name: "{{ virtualbox_name_debian }}"
+        state: present
+  when: ansible_os_family == "Debian"
