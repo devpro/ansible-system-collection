@@ -1,15 +1,19 @@
 ---
 # Tasks file for linux_server role
 
-- name: Install packages that allow apt to be used over HTTPS
-  apt:
-    name: "{{ packages }}"
-    state: present
-    update_cache: yes
-  vars:
-    packages:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - gnupg-agent
-      - software-properties-common
+- name: Install packages for Debian systems
+  block:
+    - name: Install Debian packages required for installation over HTTPS
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
+          - gpg-agent
+  when: ansible_os_family == "Debian"

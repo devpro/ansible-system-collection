@@ -1,14 +1,16 @@
 ---
-# Tasks file for virtualbox role
+# Tasks file for vagrant role
+# Reference: https://www.vagrantup.com/downloads
 
-# TODO: review & test https://github.com/amine7777/ansible-role-virtualbox
-
-- name: Install VirtualBox for Debian dists
+- name: Install Vagrant for Debian systems
   block:
+    - name: Add HashiCorp apt signing key
+      apt_key:
+        url: https://apt.releases.hashicorp.com/gpg
+        state: present
     - name: Add VirtualBox public key
       apt_key:
         url: "{{ virtualbox_apt_key }}"
-        state: present
     - name: Add VirtualBox apt repository
       apt_repository:
         repo: "{{ virtualbox_apt_repo }}"
