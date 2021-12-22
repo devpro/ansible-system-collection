@@ -1,0 +1,7 @@
+---
+# Handlers file for docker_engine role
+
+- name: Start docker
+  service:
+    name: docker
+    state: started

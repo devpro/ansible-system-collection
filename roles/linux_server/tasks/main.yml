@@ -1,7 +1,7 @@
 ---
 # Tasks file for linux_server role
 
-- name: Install packages for Debian systems
+- name: Install required components for Debian systems
   block:
     - name: Install Debian packages required for installation over HTTPS
       apt:
@@ -17,3 +17,4 @@
           - software-properties-common
           - gpg-agent
   when: ansible_os_family == "Debian"
+

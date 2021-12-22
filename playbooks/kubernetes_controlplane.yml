@@ -4,4 +4,5 @@
 - hosts: all
   roles:
   - linux_server
+  - docker_engine
   - kubernetes_controlplane

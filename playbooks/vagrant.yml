@@ -1,9 +1,8 @@
 ---
-# Playbook to install VirtualBox on the system
+# Playbook to install Vagrant
 
 - hosts: all
   roles:
-  - linux_server
-  - docker_engine
-  - virtualbox
-  - vagrant
+    - ../roles/linux_server
+    - ../roles/virtualbox
+    - ../roles/vagrant

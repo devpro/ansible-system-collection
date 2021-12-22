@@ -1,0 +1,7 @@
+---
+# Handlers file for virtualbox role
+
+- name: Run vboxconfig
+  when:
+    - ansible_system == 'Linux'
+  command: vboxconfig

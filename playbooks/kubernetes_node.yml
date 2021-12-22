@@ -1,7 +1,8 @@
 ---
-# Playbook to install Kubernetes control plane
+# Playbook to install Kubernetes node
 
 - hosts: all
   roles:
   - linux_server
+  - docker_engine
   - kubernetes_node
