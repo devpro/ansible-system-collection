@@ -1,0 +1,23 @@
+---
+# Tasks file for vagrant_singlevm_ubuntu1804 role
+
+- name: Create Vagrantfile
+  become: false
+  template:
+    src: templates/Vagrantfile.j2
+    dest: "{{ vagrant_singlevm_path }}/Vagrantfile"
+    # owner: root
+    # group: root
+    # mode: 0644
+# - name: Add docker start in user profile
+#   become: false
+#   lineinfile:
+#     path: ~/.profile
+#     line: sudo service docker start
+#     create: yes
+- name: Add vagrant up in user profile
+  become: false
+  lineinfile:
+    path: ~/.profile
+    line: cd {{ vagrant_singlevm_path }} && vagrant up
+    create: yes

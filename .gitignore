@@ -1,1 +1,5 @@
+# ansible inventory hosts files
 /inventories/**/hosts
+
+# ansible collection build files
+/*.tar.gz

@@ -32,13 +32,37 @@ Ansible playbook | Action on the host
 
 * Create local inventories for the tests
 
-* Execute a playbook (use one or create a new one)
+* Validate a code change by executing a playbook (use one or create a new one)
 
 ```bash
 # checks the hosts can be reached ok
 ansible all -m ping -i inventories/lab01
 
 ansible-playbook -i inventories/lab01 playbooks/demo.yml --ask-become-pass
+```
+
+* Publish the collection
+
+```bash
+ansible-galaxy collection build
+```
+
+* Push to Artifactory
+
+```bash
+# sets jfrog environment
+export JFROG_INSTANCE=devpro.jfrog.io
+export JFROG_REPOSITORY=rabbidsincubator-ansible
+
+# sets jfrog authentication credentials
+export JFROG_USERNAME=
+export JFROG_TOKEN=
+
+# sets artifact information
+export ARTIFACT_FILENAME=rabbids_incubator-system-1.0.0.tar.gz
+
+# pushes the new version of the ansible collection to artifactory
+curl -u$JFROG_USERNAME:$JFROG_TOKEN -T $ARTIFACT_FILENAME "https://${JFROG_INSTANCE}/artifactory/${JFROG_REPOSITORY}/${ARTIFACT_FILENAME}"
 ```
 
 ## How to run locally the GitLab pipeline
