@@ -1,6 +1,13 @@
 ---
 # Tasks file for vagrant_singlevm_ubuntu1804 role
 
+- name: Create {{ vagrant_singlevm_path }} directory
+  become: false
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ vagrant_singlevm_path }}"
 - name: Create Vagrantfile
   become: false
   template:

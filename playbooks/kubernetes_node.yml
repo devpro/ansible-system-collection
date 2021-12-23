@@ -2,7 +2,8 @@
 # Playbook to install Kubernetes node
 
 - hosts: all
+  become: true
   roles:
-  - linux_server
-  - docker_engine
-  - kubernetes_node
+    - ../roles/linux_server
+    - ../roles/docker_engine
+    - ../roles/kubernetes_node
