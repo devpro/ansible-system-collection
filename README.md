@@ -13,6 +13,7 @@ Ansible role | Action on the host
 `kubernetes_node` | Install Kubernetes node and join a cluster
 `linux_server` | Install most commonly required Linux packages
 `vagrant` | Install Vagrant
+`vagrant_k8s` | Provision VM and create a Kubernetes clusters
 
 * Review the Ansible playbooks (can be used as is or as examples)
 
@@ -21,10 +22,36 @@ Ansible playbook | Action on the host
 `kubernetes_controlplane` | Install Kubernetes control plane with kubeadm
 `kubernetes_node` | Install Kubernetes node and join a cluster
 `vagrant` | Install Vagrant
+`vagrant_k8s` | Install Vagrant, provision VM and a create Kubernetes clusters
 
 * Make sure Ansible is installed and an inventory is defined
 
-* TODO
+* Download the collection from Artifactory and install it locally
+
+```bash
+# downloads the file
+ansible-galaxy collection download https://devpro.jfrog.io/artifactory/rabbidsincubator-ansible/rabbids_incubator-system-1.0.0.tar.gz
+
+# installs the collection
+ansible-galaxy collection install collections/rabbids_incubator-system-1.0.0.tar.gz
+
+# checks "rabbids_incubator.system" appears in the list
+ansible-galaxy collection list
+```
+
+* Create a local inventory file
+
+```ini
+[lab]
+myservername_or_ipaddress
+```
+
+* Run a playbook (here Vagrant playbook)
+
+```ini
+# runs a playbook
+ansible-playbook rabbids_incubator.system.vagrant -i ./inventory --ask-become-pass
+```
 
 ## How to contribute
 
@@ -38,6 +65,7 @@ Ansible playbook | Action on the host
 # checks the hosts can be reached ok
 ansible all -m ping -i inventories/lab01
 
+# run a playbook
 ansible-playbook -i inventories/lab01 playbooks/demo.yml --ask-become-pass
 ```
 

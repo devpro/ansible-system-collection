@@ -7,11 +7,11 @@ version: 1.0.0
 readme: README.md
 
 authors:
-- Bertrand Thomas <bertrand@devpro.fr>
+  - Bertrand Thomas <bertrand@devpro.fr>
 
 description: Ansible collection to install and configure operating systems
 
-license_file: 'LICENSE'
+license_file: "LICENSE"
 
 tags: []
 
@@ -37,4 +37,12 @@ issues: https://github.com/rabbids-incubator/ansible-system-collection/issues
 # A pattern is matched from the relative path of the file or directory of the collection directory.
 # This uses 'fnmatch' to match the files or directories.
 # Some directories and files like 'galaxy.yml', '*.pyc', '*.retry', and '.git' are always filtered
-build_ignore: []
+build_ignore:
+  - "inventories"
+  - "playbooks/*.conf"
+  - "playbooks/*.sh"
+  - "temp"
+  - "tests"
+  - "*.tar.gz"
+  - ".gitlab-ci.yml"
+  - ".editorconfig"

@@ -1,0 +1,9 @@
+default:
+  image: ubuntu:20.04
+
+ci:
+  stage: build
+  before_script:
+    - echo "TODO"
+  script:
+    - echo "TODO"
