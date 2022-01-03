@@ -3,3 +3,6 @@
 
 # ansible collection build files
 /*.tar.gz
+
+# temporary files
+/playbooks/join-command
