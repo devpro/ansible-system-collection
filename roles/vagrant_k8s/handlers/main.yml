@@ -1,0 +1,12 @@
+---
+# Handlers file for vagrant_k8s role
+
+- name: Reload service daemon
+  shell: |
+    sudo systemctl daemon-reload
+    sudo systemctl enable vagrant-k8s-cluster.service
+
+- name: Run vagrant
+  service:
+    name: vagrant-k8s-cluster
+    state: restarted

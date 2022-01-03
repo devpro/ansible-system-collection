@@ -1,5 +1,5 @@
 ---
-# Tasks file for kubernetes_node role
+# Tasks file for kubernetes_node/join subrole
 
 - name: Run kubelet installation
   include_role:

@@ -1,0 +1,51 @@
+---
+# Tasks file for vagrant_singlevm_ubuntu1804 role
+
+- name: Create {{ vagrant_k8s_path }} directory
+  become: false
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ vagrant_k8s_path }}"
+- name: Create Vagrantfile
+  become: false
+  template:
+    src: templates/Vagrantfile.j2
+    dest: "{{ vagrant_k8s_path }}/Vagrantfile"
+  notify:
+    - Run vagrant
+- name: Get the username running the deploy
+  become: false
+  local_action: command whoami
+  register: username_on_the_host
+  check_mode: no
+- name: debug
+  debug:
+    var: username_on_the_host
+- name: Create vagrant start script
+  template:
+    src: templates/vagrantstart.j2
+    # comment: could also be "/usr/local/bin/start-vagrant-k8s-node.sh"
+    dest: "/home/{{ username_on_the_host.stdout_lines[0] }}/run_vagrant_k8s.sh"
+    owner: "{{ username_on_the_host.stdout_lines[0] }}"
+    # limitation: we "assume" it's the same
+    group: "{{ username_on_the_host.stdout_lines[0] }}"
+    mode: 0755
+  notify:
+    - Run vagrant
+- name: Create vagrant service
+  template:
+    src: templates/vagrantservice.j2
+    dest: "/etc/systemd/system/vagrant-k8s-cluster.service"
+    owner: "{{ username_on_the_host.stdout_lines[0] }}"
+    group: "{{ username_on_the_host.stdout_lines[0] }}"
+    mode: 0664
+  vars:
+    username: "{{ username_on_the_host.stdout_lines[0] }}"
+    # limitation: we "assume" it's the same
+    usergroup: "{{ username_on_the_host.stdout_lines[0] }}"
+    script: "/home/{{ username_on_the_host.stdout_lines[0] }}/run_vagrant_k8s.sh"
+  notify:
+    - Run vagrant
+    - Reload service daemon

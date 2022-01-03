@@ -1,0 +1,26 @@
+N = {{ vagrant_k8s_nodenb }}
+
+Vagrant.configure("2") do |config|
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = {{ vagrant_k8s_memory }}
+        v.cpus = {{ vagrant_k8s_cpus }}
+    end
+
+    config.vm.define "k8s-controlplane" do |controlplane|
+        controlplane.vm.box = "{{ vagrant_k8s_image }}"
+        controlplane.vm.hostname = "k8s-controlplane"
+        controlplane.vm.network "public_network", ip: "{{ vagrant_k8s_publicip }}", bridge: "{{ vagrant_k8s_network_adapter }}"
+        controlplane.vm.network "private_network", ip: "{{ vagrant_k8s_privatenetwork }}.10"
+        # controlplane.vm.network :forwarded_port, guest: 22, host: 10122, id: "ssh"
+    end
+
+    (1..N).each do |i|
+        config.vm.define "k8s-node#{i}" do |node|
+            node.vm.box = "{{ vagrant_k8s_image }}"
+            node.vm.hostname = "k8s-node#{i}"
+            node.vm.network "private_network", ip: "{{ vagrant_k8s_privatenetwork }}.1#{i + 1}"
+            # node.vm.network :forwarded_port, guest: 22, host: "10#{i + 1}22", id: "ssh"
+        end
+    end
+end

@@ -1,0 +1,10 @@
+---
+# Playbook to install Vagrant Kubernetes cluster
+
+- hosts: all
+  become: true
+  roles:
+    - ../roles/linux_server
+    - ../roles/virtualbox
+    - ../roles/vagrant
+    - ../roles/vagrant_k8s
