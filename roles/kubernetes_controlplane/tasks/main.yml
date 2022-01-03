@@ -10,3 +10,13 @@
   include_tasks: init.yml
   when: not kubeadm_ca.stat.exists
   run_once: yes
+
+- name: Copy kubernetes admin configuration file locally
+  fetch:
+    src: "/etc/kubernetes/admin.conf"
+    dest: ./admin.conf
+    flat: yes
+
+- name: Configure kubectl
+  debug:
+    msg: "Edit ~/.kube/config with contents from ./admin.conf"

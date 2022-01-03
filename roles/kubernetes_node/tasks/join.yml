@@ -8,7 +8,7 @@
 
 - name: Copy the join command to server location
   copy:
-    src: join-command
+    src: ./join-command.sh
     dest: /tmp/join-command.sh
     mode: 0777
 

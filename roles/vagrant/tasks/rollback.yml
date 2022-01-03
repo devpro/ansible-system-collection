@@ -8,15 +8,18 @@
       apt_key:
         url: https://apt.releases.hashicorp.com/gpg
         state: absent
+
     - name: Remove hashicorp apt repository
       apt_repository:
         repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ubuntu_version_name }} main
         state: absent
         filename: hashicorp.list
       changed_when: false
+
     - name: Uninstall vagrant
       apt:
         name: vagrant
         state: absent
         update_cache: yes
+
   when: ansible_os_family == "Debian"
