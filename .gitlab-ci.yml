@@ -7,4 +7,5 @@ ci:
     - python -m pip install ansible
     - pip install "ansible-lint[yamllint]"
   script:
+    - ansible-lint
     - ansible-playbook --syntax-check playbooks/*.yml

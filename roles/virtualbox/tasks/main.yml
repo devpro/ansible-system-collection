@@ -20,7 +20,7 @@
       apt:
         name: virtualbox-{{ virtualbox_version }}
         state: present
-        update_cache: yes
+        update_cache: true
       notify:
         - Run vboxconfig
   when: ansible_os_family == "Debian"

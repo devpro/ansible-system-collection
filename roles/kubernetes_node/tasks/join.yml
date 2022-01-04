@@ -10,7 +10,11 @@
   copy:
     src: ./join-command.sh
     dest: /tmp/join-command.sh
-    mode: 0777
+    owner: root
+    group: root
+    mode: "0777"
 
 - name: Join the node to cluster
-  command: sh /tmp/join-command.sh
+  command:
+    cmd: sh /tmp/join-command.sh
+    creates: "/etc/kubernetes/kubelet.conf"

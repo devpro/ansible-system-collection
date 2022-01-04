@@ -9,13 +9,13 @@
 - name: Init cluster if needed
   include_tasks: init.yml
   when: not kubeadm_ca.stat.exists
-  run_once: yes
+  run_once: true
 
 - name: Copy kubernetes admin configuration file locally
   fetch:
     src: "/etc/kubernetes/admin.conf"
     dest: ./admin.conf
-    flat: yes
+    flat: true
 
 - name: Configure kubectl
   debug:

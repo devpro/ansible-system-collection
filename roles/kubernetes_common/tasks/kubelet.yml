@@ -30,7 +30,7 @@
   apt:
     name: "{{ packages }}"
     state: present
-    update_cache: yes
+    update_cache: true
   vars:
     packages:
       - kubelet
@@ -41,6 +41,10 @@
   lineinfile:
     path: /etc/default/kubelet
     line: KUBELET_EXTRA_ARGS=--node-ip={{ kubernetes_controlnode_ip }}
-    create: yes
+    create: true
+    owner: root
+    group: root
+    mode: "0644"
+
   notify:
     - Run kubelet
