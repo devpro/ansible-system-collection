@@ -1,0 +1,25 @@
+---
+# Tasks file for vagrant role
+# Reference: https://www.vagrantup.com/downloads
+
+- name: Install Vagrant for Debian systems
+  block:
+    - name: Add HashiCorp apt signing key
+      apt_key:
+        url: https://apt.releases.hashicorp.com/gpg
+        state: present
+
+    - name: Add hashicorp apt repository
+      apt_repository:
+        repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ubuntu_version_name }} main
+        state: present
+        filename: hashicorp.list
+      changed_when: false
+
+    - name: Install vagrant
+      apt:
+        name: vagrant
+        state: present
+        update_cache: true
+
+  when: ansible_os_family == "Debian"

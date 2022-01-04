@@ -1,0 +1,48 @@
+namespace: rabbids_incubator
+
+name: system
+
+version: 1.0.0
+
+readme: README.md
+
+authors:
+  - Bertrand Thomas <bertrand@devpro.fr>
+
+description: Ansible collection to install and configure operating systems
+
+license_file: "LICENSE"
+
+tags: []
+
+# Collections that this collection requires to be installed for it to be usable.
+# The key of the dict is the collection label 'namespace.name'.
+# The value is a version range L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification).
+# Multiple version range specifiers can be set and are separated by ','
+dependencies: {}
+
+# The URL of the originating SCM repository
+repository: https://github.com/rabbids-incubator/ansible-system-collection
+
+# The URL to any online docs
+documentation: https://github.com/rabbids-incubator/ansible-system-collection
+
+# The URL to the homepage of the collection/project
+homepage: https://github.com/rabbids-incubator/ansible-system-collection
+
+# The URL to the collection issue tracker
+issues: https://github.com/rabbids-incubator/ansible-system-collection/issues
+
+# A list of file glob-like patterns used to filter any files or directories that should not be included in the build artifact.
+# A pattern is matched from the relative path of the file or directory of the collection directory.
+# This uses 'fnmatch' to match the files or directories.
+# Some directories and files like 'galaxy.yml', '*.pyc', '*.retry', and '.git' are always filtered
+build_ignore:
+  - "inventories"
+  - "playbooks/*.conf"
+  - "playbooks/*.sh"
+  - "temp"
+  - "tests"
+  - "*.tar.gz"
+  - ".gitlab-ci.yml"
+  - ".editorconfig"

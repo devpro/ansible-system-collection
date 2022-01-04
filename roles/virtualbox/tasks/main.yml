@@ -1,0 +1,26 @@
+---
+# Tasks file for virtualbox
+# Reference: https://www.virtualbox.org/wiki/Linux_Downloads
+
+- name: Install VirtualBox for Debian systems
+  block:
+    - name: Add virtualbox public key
+      apt_key:
+        url: "{{ item }}"
+        state: present
+      with_items:
+        - https://www.virtualbox.org/download/oracle_vbox_2016.asc
+        - https://www.virtualbox.org/download/oracle_vbox.asc
+    - name: Add virtualbox apt repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian {{ ubuntu_version_name }} contrib
+        state: present
+        filename: virtualbox.list
+    - name: Install virtualbox
+      apt:
+        name: virtualbox-{{ virtualbox_version }}
+        state: present
+        update_cache: true
+      notify:
+        - Run vboxconfig
+  when: ansible_os_family == "Debian"

@@ -1,0 +1,10 @@
+# ansible inventory hosts files
+/inventories/**/hosts
+
+# ansible collection build files
+/*.tar.gz
+
+# temporary files
+/playbooks/join-command.sh
+/playbooks/admin.conf
+/builds

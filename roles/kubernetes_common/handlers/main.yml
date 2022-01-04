@@ -1,0 +1,8 @@
+---
+# Handlers file for kubernetes_common role
+
+- name: Restart kubelet
+  service:
+    name: kubelet
+    daemon_reload: true
+    state: restarted

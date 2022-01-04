@@ -1,0 +1,22 @@
+---
+# Tasks file for kubernetes_controlplane role
+
+- name: Check if kubeadm has already run
+  stat:
+    path: "/etc/kubernetes/pki/ca.key"
+  register: kubeadm_ca
+
+- name: Init cluster if needed
+  include_tasks: init.yml
+  when: not kubeadm_ca.stat.exists
+  run_once: true
+
+- name: Copy kubernetes admin configuration file locally
+  fetch:
+    src: "/etc/kubernetes/admin.conf"
+    dest: ./admin.conf
+    flat: true
+
+- name: Configure kubectl
+  debug:
+    msg: "Edit ~/.kube/config with contents from ./admin.conf"

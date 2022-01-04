@@ -1,0 +1,14 @@
+[Unit]
+Description=Run Vagrant to start Kubernetes cluster
+After=network.service
+
+[Service]
+Type=simple
+User={{ username }}
+Group={{ usergroup }}
+ExecStart={{ script }}
+TimeoutStartSec=0
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target

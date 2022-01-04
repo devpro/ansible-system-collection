@@ -1,0 +1,51 @@
+---
+# Tasks file for vagrant_singlevm_ubuntu1804 role
+# limitation: we "assume" usergroup is the same as username on the host
+
+- name: Create {{ vagrant_k8s_path }} directory
+  become: false
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+  with_items:
+    - "{{ vagrant_k8s_path }}"
+
+- name: Create Vagrantfile
+  become: false
+  template:
+    src: templates/Vagrantfile.j2
+    dest: "{{ vagrant_k8s_path }}/Vagrantfile"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0664"
+  notify:
+    - Run vagrant
+
+- name: Create vagrant start script
+  template:
+    src: templates/vagrantstart.j2
+    # comment: could also be placed in /usr/local/bin directory
+    dest: "/home/{{ ansible_user }}/run_vagrant_k8s.sh"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+  notify:
+    - Run vagrant
+
+- name: Create vagrant service
+  template:
+    src: templates/vagrantservice.j2
+    dest: "/etc/systemd/system/vagrant-k8s-cluster.service"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0664"
+  vars:
+    username: "{{ ansible_user }}"
+    usergroup: "{{ ansible_user }}"
+    script: "/home/{{ ansible_user }}/run_vagrant_k8s.sh"
+  notify:
+    - Run vagrant
+    - Reload service daemon

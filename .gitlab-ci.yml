@@ -1,0 +1,11 @@
+image: python:3.10
+
+ci:
+  stage: build
+  before_script:
+    - python -m pip install --upgrade pip
+    - python -m pip install ansible
+    - pip install "ansible-lint[yamllint]"
+  script:
+    - ansible-lint
+    - ansible-playbook --syntax-check playbooks/*.yml

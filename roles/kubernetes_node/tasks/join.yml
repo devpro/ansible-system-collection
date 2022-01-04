@@ -1,0 +1,20 @@
+---
+# Tasks file for kubernetes_node/join subrole
+
+- name: Run kubelet installation
+  include_role:
+    name: ../roles/kubernetes_common
+    tasks_from: kubelet
+
+- name: Copy the join command to server location
+  copy:
+    src: ./join-command.sh
+    dest: /tmp/join-command.sh
+    owner: root
+    group: root
+    mode: "0777"
+
+- name: Join the node to cluster
+  command:
+    cmd: sh /tmp/join-command.sh
+    creates: "/etc/kubernetes/kubelet.conf"

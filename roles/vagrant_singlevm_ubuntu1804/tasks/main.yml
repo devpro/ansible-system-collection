@@ -1,0 +1,34 @@
+---
+# Tasks file for vagrant_singlevm_ubuntu1804 role
+
+- name: Get the username running the deploy
+  become: false
+  delegate_to: localhost
+  command: whoami
+  register: username_on_the_host
+  check_mode: false
+  changed_when: whoami.rc != 0
+
+- name: Display username
+  debug:
+    var: username_on_the_host
+
+- name: Create {{ vagrant_singlevm_path }} directory
+  become: false
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ username_on_the_host.stdout_lines[0] }}"
+    group: "{{ username_on_the_host.stdout_lines[0] }}"
+    mode: "0755"
+  with_items:
+    - "{{ vagrant_singlevm_path }}"
+
+- name: Create Vagrantfile
+  become: false
+  template:
+    src: templates/Vagrantfile.j2
+    dest: "{{ vagrant_singlevm_path }}/Vagrantfile"
+    owner: "{{ username_on_the_host.stdout_lines[0] }}"
+    group: "{{ username_on_the_host.stdout_lines[0] }}"
+    mode: "0644"
