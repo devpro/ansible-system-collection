@@ -1,6 +1,8 @@
 # Rabbids Incubator Ansible Collection
 
-The `rabbids_incubator.system` Ansible collection provides a set of Ansible roles and playbooks to ease system administration by automating common actions.
+[![GitLab Pipeline Status](https://gitlab.com/rabbids-incubator/ansible-system-collection/badges/main/pipeline.svg)](https://gitlab.com/rabbids-incubator/ansible-system-collection/-/pipelines)
+
+The `rabbids_incubator.system` Ansible collection provides a set of Ansible roles and playbooks to ease system administration by automating common actions. It can be used directly or viewed as an example.
 
 ## How to use
 
@@ -15,7 +17,7 @@ Ansible role | Action on the host
 `vagrant` | Install Vagrant
 `vagrant_k8s` | Provision VM and create a Kubernetes clusters
 
-* Review the Ansible playbooks (can be used as is or as examples)
+* Review the Ansible playbooks
 
 Ansible playbook | Action on the host
 ---------------- | ------------------

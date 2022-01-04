@@ -16,5 +16,5 @@
           - gnupg-agent
           - software-properties-common
           - gpg-agent
-  when: ansible_os_family == "Debian"
 
+  when: ansible_os_family == "Debian"

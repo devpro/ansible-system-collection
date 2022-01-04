@@ -7,3 +7,4 @@
 # temporary files
 /playbooks/join-command.sh
 /playbooks/admin.conf
+/builds
