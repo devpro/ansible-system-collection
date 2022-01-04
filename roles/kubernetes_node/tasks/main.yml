@@ -1,4 +1,5 @@
 ---
+# Tasks file for kubernetes_node subrole
 
 - name: Check if kubelet.conf exists
   stat:
