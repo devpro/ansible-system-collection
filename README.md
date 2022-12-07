@@ -2,11 +2,11 @@
 
 [![GitLab Pipeline Status](https://gitlab.com/devpro-labs/ansible-system-collection/badges/main/pipeline.svg)](https://gitlab.com/devpro-labs/ansible-system-collection/-/pipelines)
 
-The `rabbids_incubator.system` Ansible collection provides a set of Ansible roles and playbooks to ease system administration by automating common actions. It can be used directly or viewed as an example.
+Ansible `devpro.system` collection provides a set of Ansible roles and playbooks to ease system administration by automating common actions. It can be used directly or viewed as an example.
 
 ## How to use
 
-* Look at the Ansible roles
+* Look at Ansible roles
 
 Ansible role              | Action on the host
 --------------------------|----------------------------------------------
@@ -17,7 +17,7 @@ Ansible role              | Action on the host
 `vagrant`                 | Install Vagrant
 `vagrant_k8s`             | Provision VM and create a Kubernetes clusters
 
-* Review the Ansible playbooks
+* Review Ansible playbooks
 
 Ansible playbook          | Action on the host
 --------------------------|---------------------------------------------------------------
@@ -32,12 +32,12 @@ Ansible playbook          | Action on the host
 
 ```bash
 # downloads the file
-ansible-galaxy collection download https://devpro.jfrog.io/artifactory/rabbidsincubator-ansible/rabbids_incubator-system-1.0.0.tar.gz
+ansible-galaxy collection download https://devpro.jfrog.io/artifactory/devpro-ansible/devpro-system-1.0.0.tar.gz
 
 # installs the collection
-ansible-galaxy collection install collections/rabbids_incubator-system-1.0.0.tar.gz
+ansible-galaxy collection install collections/devpro-system-1.0.0.tar.gz
 
-# checks "rabbids_incubator.system" appears in the list
+# checks "devpro.system" appears in the list
 ansible-galaxy collection list
 ```
 
@@ -51,8 +51,7 @@ myservername_or_ipaddress
 * Run a playbook (here Vagrant playbook)
 
 ```ini
-# runs a playbook
-ansible-playbook rabbids_incubator.system.vagrant -i ./inventory --ask-become-pass
+ansible-playbook devpro.system.vagrant -i ./inventory --ask-become-pass
 ```
 
 ## How to contribute
@@ -89,10 +88,17 @@ export JFROG_USERNAME=
 export JFROG_TOKEN=
 
 # sets artifact information
-export ARTIFACT_FILENAME=rabbids_incubator-system-1.0.0.tar.gz
+export ARTIFACT_FILENAME=devpro-system-1.0.0.tar.gz
 
 # pushes the new version of the ansible collection to artifactory
 curl -u$JFROG_USERNAME:$JFROG_TOKEN -T $ARTIFACT_FILENAME "https://${JFROG_INSTANCE}/artifactory/${JFROG_REPOSITORY}/${ARTIFACT_FILENAME}"
+```
+
+* Lint Ansible files
+
+```bash
+# https://hub.docker.com/r/pipelinecomponents/ansible-lint
+docker run -it --rm --name ansible-lint -v $PWD:$PWD --workdir $PWD pipelinecomponents/ansible-lint
 ```
 
 ## How to run locally the GitLab pipeline
