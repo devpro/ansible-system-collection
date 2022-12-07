@@ -8,23 +8,23 @@ The `rabbids_incubator.system` Ansible collection provides a set of Ansible role
 
 * Look at the Ansible roles
 
-Ansible role | Action on the host
------------- | ------------------
-`docker_engine` | Install Docker engine
+Ansible role              | Action on the host
+--------------------------|----------------------------------------------
+`docker_engine`           | Install Docker engine
 `kubernetes_controlplane` | Install Kubernetes control plane
-`kubernetes_node` | Install Kubernetes node and join a cluster
-`linux_server` | Install most commonly required Linux packages
-`vagrant` | Install Vagrant
-`vagrant_k8s` | Provision VM and create a Kubernetes clusters
+`kubernetes_node`         | Install Kubernetes node and join a cluster
+`linux_server`            | Install most commonly required Linux packages
+`vagrant`                 | Install Vagrant
+`vagrant_k8s`             | Provision VM and create a Kubernetes clusters
 
 * Review the Ansible playbooks
 
-Ansible playbook | Action on the host
----------------- | ------------------
+Ansible playbook          | Action on the host
+--------------------------|---------------------------------------------------------------
 `kubernetes_controlplane` | Install Kubernetes control plane with kubeadm
-`kubernetes_node` | Install Kubernetes node and join a cluster
-`vagrant` | Install Vagrant
-`vagrant_k8s` | Install Vagrant, provision VM and a create Kubernetes clusters
+`kubernetes_node`         | Install Kubernetes node and join a cluster
+`vagrant`                 | Install Vagrant
+`vagrant_k8s`             | Install Vagrant, provision VM and a create Kubernetes clusters
 
 * Make sure Ansible is installed and an inventory is defined
 
