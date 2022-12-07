@@ -1,4 +1,4 @@
-# Rabbids Incubator Ansible Collection
+# Ansible System Collection
 
 [![GitLab Pipeline Status](https://gitlab.com/devpro-labs/ansible-system-collection/badges/main/pipeline.svg)](https://gitlab.com/devpro-labs/ansible-system-collection/-/pipelines)
 
