@@ -1,8 +1,6 @@
 ---
-# Handlers file for kubernetes_common role
-
 - name: Restart kubelet
-  service:
+  ansible.builtin.service:
     name: kubelet
     daemon_reload: true
     state: restarted

@@ -1,7 +1,5 @@
 ---
-# Handlers file for docker_engine role
-
 - name: Start docker
-  service:
+  ansible.builtin.service:
     name: docker
     state: started

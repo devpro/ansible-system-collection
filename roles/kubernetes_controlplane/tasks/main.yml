@@ -1,22 +1,20 @@
 ---
-# Tasks file for kubernetes_controlplane role
-
 - name: Check if kubeadm has already run
-  stat:
+  ansible.builtin.stat:
     path: "/etc/kubernetes/pki/ca.key"
   register: kubeadm_ca
 
 - name: Init cluster if needed
-  include_tasks: init.yml
+  ansible.builtin.include_tasks: init.yml
   when: not kubeadm_ca.stat.exists
   run_once: true
 
 - name: Copy kubernetes admin configuration file locally
-  fetch:
+  ansible.builtin.fetch:
     src: "/etc/kubernetes/admin.conf"
     dest: ./admin.conf
     flat: true
 
 - name: Configure kubectl
-  debug:
+  ansible.builtin.debug:
     msg: "Edit ~/.kube/config with contents from ./admin.conf"

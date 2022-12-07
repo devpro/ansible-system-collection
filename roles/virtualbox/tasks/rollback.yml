@@ -1,11 +1,9 @@
 ---
-# Tasks file for virtualbox role
-# Reference: https://www.virtualbox.org/wiki/Linux_Downloads
-
 - name: Uninstall VirtualBox for Debian systems
+  when: ansible_os_family == "Debian"
   block:
     - name: Remove virtualbox public key
-      apt_key:
+      ansible.builtin.apt_key:
         url: "{{ item }}"
         state: absent
       with_items:
@@ -14,12 +12,11 @@
         - https://www.virtualbox.org/download/oracle_vbox.asc
         - https://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc
     - name: Remove virtualbox apt repository
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian {{ ubuntu_version_name }} contrib
         state: absent
         filename: virtualbox.list
     - name: Uninstall virtualbox
-      apt:
+      ansible.builtin.apt:
         name: virtualbox-{{ virtualbox_version }}
         state: absent
-  when: ansible_os_family == "Debian"

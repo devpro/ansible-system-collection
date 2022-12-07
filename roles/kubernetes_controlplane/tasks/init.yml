@@ -1,13 +1,11 @@
 ---
-# Tasks file for kubernetes_controlplane/init subrole
-
 - name: Run kubelet installation
-  include_role:
-    name: ../roles/kubernetes_common
+  ansible.builtin.import_role:
+    name: kubernetes_common
     tasks_from: kubelet
 
 - name: Initialize the Kubernetes cluster using kubeadm
-  command:
+  ansible.builtin.command:
     cmd: >
       kubeadm init
       --apiserver-advertise-address="{{ kubernetes_controlnode_ip }}"
@@ -17,7 +15,7 @@
     creates: "/etc/kubernetes/kubelet.conf"
 
 - name: Setup kubeconfig for {{ provisioning_username }} user
-  command:
+  ansible.builtin.command:
     cmd: "{{ item }}"
     creates: /home/{{ provisioning_username }}/.kube/config
   with_items:
@@ -27,7 +25,7 @@
 
 - name: Download calico operator manifest
   become: false
-  get_url:
+  ansible.builtin.get_url:
     url: https://docs.projectcalico.org/manifests/tigera-operator.yaml
     dest: ./calico-operator.yaml
     owner: "{{ ansible_user }}"
@@ -42,7 +40,7 @@
 
 - name: Download calico resources manifest
   become: false
-  get_url:
+  ansible.builtin.get_url:
     url: https://docs.projectcalico.org/manifests/custom-resources.yaml
     dest: ./calico-resources.yaml
     owner: "{{ ansible_user }}"
@@ -56,14 +54,14 @@
     src: ./calico-resources.yaml
 
 - name: Generate join command
-  command: kubeadm token create --print-join-command
+  ansible.builtin.command: kubeadm token create --print-join-command
   register: join_command
   changed_when: join_command.rc != 0
 
 - name: Copy join command to local file
   delegate_to: localhost
   become: false
-  copy:
+  ansible.builtin.copy:
     content: "{{ join_command.stdout_lines[0] }}"
     dest: ./join-command.sh
     owner: root
