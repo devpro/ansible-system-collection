@@ -1,7 +1,6 @@
 ---
-# Playbook to install Kubernetes control plane
-
-- hosts: all
+- name: Install Kubernetes control plane
+  hosts: all
   become: true
   roles:
     - ../roles/linux_server
