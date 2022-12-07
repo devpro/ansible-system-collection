@@ -1,10 +1,8 @@
 ---
-# Tasks file for vagrant_singlevm_ubuntu1804 role
 # limitation: we "assume" usergroup is the same as username on the host
-
 - name: Create {{ vagrant_k8s_path }} directory
   become: false
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: "{{ ansible_user }}"
@@ -15,7 +13,7 @@
 
 - name: Create Vagrantfile
   become: false
-  template:
+  ansible.builtin.template:
     src: templates/Vagrantfile.j2
     dest: "{{ vagrant_k8s_path }}/Vagrantfile"
     owner: "{{ ansible_user }}"
@@ -25,7 +23,7 @@
     - Run vagrant
 
 - name: Create vagrant start script
-  template:
+  ansible.builtin.template:
     src: templates/vagrantstart.j2
     # comment: could also be placed in /usr/local/bin directory
     dest: "/home/{{ ansible_user }}/run_vagrant_k8s.sh"
@@ -36,7 +34,7 @@
     - Run vagrant
 
 - name: Create vagrant service
-  template:
+  ansible.builtin.template:
     src: templates/vagrantservice.j2
     dest: "/etc/systemd/system/vagrant-k8s-cluster.service"
     owner: "{{ ansible_user }}"

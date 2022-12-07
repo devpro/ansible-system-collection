@@ -1,21 +1,18 @@
 ---
-# Tasks file for docker_engine role
-
 - name: Install Docker engine on Debian systems
+  when: ansible_os_family == "Debian"
   block:
     - name: Add an apt signing key for Docker
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
-
     - name: Add apt repository for stable version
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_version_name }} stable
         state: present
         filename: docker.list
-
     - name: Install docker and its dependencies
-      apt:
+      ansible.builtin.apt:
         name: "{{ packages }}"
         state: present
         update_cache: true
@@ -26,14 +23,12 @@
           - containerd.io
       notify:
         - Start docker
-
     - name: Add user to docker group
-      user:
+      ansible.builtin.user:
         name: "{{ provisioning_username }}"
         group: docker
-
     - name: Change docker cgroup
-      copy:
+      ansible.builtin.copy:
         dest: /etc/docker/daemon.json
         content: |
           {
@@ -43,11 +38,8 @@
         group: root
         mode: u=rw,g=r,o=r
       register: docker_daemon_file
-
     - name: Restart docker
-      service:
+      ansible.builtin.service:
         name: docker
         state: restarted
       when: docker_daemon_file.changed
-
-  when: ansible_os_family == "Debian"

@@ -1,7 +1,6 @@
 ---
-# Playbook to install Kubernetes node
-
-- hosts: all
+- name: Install Kubernetes node
+  hosts: all
   become: true
   roles:
     - ../roles/linux_server

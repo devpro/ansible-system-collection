@@ -1,13 +1,11 @@
 ---
-# Tasks file for kubernetes_node/join subrole
-
 - name: Run kubelet installation
-  include_role:
-    name: ../roles/kubernetes_common
+  ansible.builtin.include_role:
+    name: kubernetes_common
     tasks_from: kubelet
 
 - name: Copy the join command to server location
-  copy:
+  ansible.builtin.copy:
     src: ./join-command.sh
     dest: /tmp/join-command.sh
     owner: root
@@ -15,6 +13,6 @@
     mode: "0777"
 
 - name: Join the node to cluster
-  command:
+  ansible.builtin.command:
     cmd: sh /tmp/join-command.sh
     creates: "/etc/kubernetes/kubelet.conf"

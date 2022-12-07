@@ -1,8 +1,6 @@
 ---
-# Tasks file for kubernetes_common/kubelet subrole
-
 - name: Remove swapfile from /etc/fstab
-  mount:
+  ansible.posix.mount:
     name: "{{ item }}"
     fstype: swap
     state: absent
@@ -11,23 +9,23 @@
     - none
 
 - name: Disable swap
-  command: swapoff -a
+  ansible.builtin.command: swapoff -a
   when: ansible_swaptotal_mb > 0
 
 - name: Add an apt signing key for Kubernetes
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     state: present
 
 - name: Adding apt repository for Kubernetes
-  apt_repository:
+  ansible.builtin.apt_repository:
     # no bionic release (see https://packages.cloud.google.com/apt/dists)
     repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
     state: present
     filename: kubernetes.list
 
 - name: Install Kubernetes binaries
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
     state: present
     update_cache: true
@@ -38,7 +36,7 @@
       - kubectl
 
 - name: Configure node ip
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/default/kubelet
     line: KUBELET_EXTRA_ARGS=--node-ip={{ kubernetes_controlnode_ip }}
     create: true

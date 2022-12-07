@@ -1,10 +1,9 @@
 ---
-# Tasks file for linux_server role
-
 - name: Install required components for Debian systems
+  when: ansible_os_family == "Debian"
   block:
     - name: Install Debian packages required for installation over HTTPS
-      apt:
+      ansible.builtin.apt:
         name: "{{ packages }}"
         state: present
         update_cache: true
@@ -16,5 +15,3 @@
           - gnupg-agent
           - software-properties-common
           - gpg-agent
-
-  when: ansible_os_family == "Debian"

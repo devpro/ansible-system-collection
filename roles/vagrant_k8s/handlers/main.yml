@@ -1,12 +1,10 @@
 ---
-# Handlers file for vagrant_k8s role
-
 - name: Reload service daemon
-  shell: |
+  ansible.builtin.shell: |
     sudo systemctl daemon-reload
     sudo systemctl enable vagrant-k8s-cluster.service
 
 - name: Run vagrant
-  service:
+  ansible.builtin.service:
     name: vagrant-k8s-cluster
     state: restarted
