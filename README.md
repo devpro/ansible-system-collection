@@ -1,6 +1,6 @@
 # Rabbids Incubator Ansible Collection
 
-[![GitLab Pipeline Status](https://gitlab.com/rabbids-incubator/ansible-system-collection/badges/main/pipeline.svg)](https://gitlab.com/rabbids-incubator/ansible-system-collection/-/pipelines)
+[![GitLab Pipeline Status](https://gitlab.com/devpro-labs/ansible-system-collection/badges/main/pipeline.svg)](https://gitlab.com/devpro-labs/ansible-system-collection/-/pipelines)
 
 The `rabbids_incubator.system` Ansible collection provides a set of Ansible roles and playbooks to ease system administration by automating common actions. It can be used directly or viewed as an example.
 
