@@ -26,7 +26,7 @@ Ansible playbook          | Action on the host
 `vagrant`                 | Install Vagrant
 `vagrant_k8s`             | Install Vagrant, provision VM and a create Kubernetes clusters
 
-* Make sure Ansible is installed and an inventory is defined
+* Make sure [Ansible is installed](https://docs.ansible.com/ansible/latest/installation_guide/index.html) and an inventory is defined
 
 * Download the collection from Artifactory and install it locally
 
@@ -56,7 +56,7 @@ ansible-playbook devpro.system.vagrant -i ./inventory --ask-become-pass
 
 ## How to contribute
 
-* Make sure Ansible is installed
+* Make sure [Ansible is installed](https://docs.ansible.com/ansible/latest/installation_guide/index.html)
 
 * Create local inventories for the tests
 
