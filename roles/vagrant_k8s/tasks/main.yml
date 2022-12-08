@@ -33,6 +33,22 @@
   notify:
     - Run vagrant
 
+- name: Create vagrant reload script
+  ansible.builtin.template:
+    src: templates/vagrantreload.j2
+    dest: "/home/{{ ansible_user }}/reload_vagrant_k8s.sh"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+
+- name: Create vagrant init script
+  ansible.builtin.template:
+    src: templates/vagrantinit.j2
+    dest: "/etc/init/vagrant_k8s.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
 - name: Create vagrant service
   ansible.builtin.template:
     src: templates/vagrantservice.j2
