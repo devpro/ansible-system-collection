@@ -14,7 +14,7 @@
     - name: Install docker and its dependencies
       ansible.builtin.apt:
         name: "{{ packages }}"
-        state: present
+        state: latest
         update_cache: true
       vars:
         packages:

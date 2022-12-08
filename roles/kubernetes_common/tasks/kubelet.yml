@@ -27,7 +27,7 @@
 - name: Install Kubernetes binaries
   ansible.builtin.apt:
     name: "{{ packages }}"
-    state: present
+    state: latest
     update_cache: true
   vars:
     packages:
@@ -43,6 +43,5 @@
     owner: root
     group: root
     mode: "0644"
-
   notify:
     - Run kubelet

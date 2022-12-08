@@ -17,7 +17,7 @@
     - name: Install virtualbox
       ansible.builtin.apt:
         name: virtualbox-{{ virtualbox_version }}
-        state: present
+        state: latest
         update_cache: true
       notify:
         - Run vboxconfig

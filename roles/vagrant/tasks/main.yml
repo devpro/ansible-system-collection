@@ -15,5 +15,5 @@
     - name: Install vagrant
       ansible.builtin.apt:
         name: vagrant
-        state: present
+        state: latest
         update_cache: true
