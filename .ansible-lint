@@ -3,5 +3,9 @@ use_default_rules: true
 skip_list:
   # Allow Jinja templating inside task and play names
   - name[template]
+  # Disable "Tasks that run when changed should likely be handlers" errors
+  - no-handler
+  # Disable "Avoid using paths when importing roles" warnings
+  - role-name[path]
 exclude_paths:
   - inventories

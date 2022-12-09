@@ -4,6 +4,22 @@
 - name: Install containerd on Debian systems
   when: ansible_os_family == "Debian"
   block:
+    - name: Load kernel modules
+      community.general.modprobe:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - overlay
+        - br_netfilter
+    - name: Make module loading persistent
+      ansible.builtin.template:
+        src: templates/containerd.conf.j2
+        dest: /etc/modules-load.d/containerd.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Reload sysctl
     - name: Add an apt signing key for Docker
       ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -20,7 +36,7 @@
     - name: Install containerd
       ansible.builtin.apt:
         name: "{{ packages }}"
-        state: latest
+        state: present
         update_cache: true
       vars:
         packages:
@@ -36,13 +52,18 @@
     #     creates: /etc/containerd/config.toml
     #   notify:
     #     - Restart containerd
+    - name: Create CNI bin directory
+      ansible.builtin.file:
+        path: /opt/cni/bin
+        state: directory
+        owner: root
+        group: root
+        mode: "0775"
     - name: Install the CNI plugin for the Containerd installation
-      ansible.builtin.command:
+      ansible.builtin.unarchive:
         # https://github.com/containernetworking/plugins/releases
-        cmd: |
-          wget https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
-          mkdir -p /opt/cni/bin
-          tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.1.1.tgz
-        creates: /opt/cni/bin
+        src: https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
+        dest: /opt/cni/bin
+        remote_src: "yes"
       notify:
         - Restart containerd

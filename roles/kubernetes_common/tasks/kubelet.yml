@@ -29,7 +29,7 @@
 - name: Install Kubernetes binaries
   ansible.builtin.apt:
     name: "{{ packages }}"
-    state: latest
+    state: present
     update_cache: true
   vars:
     packages:

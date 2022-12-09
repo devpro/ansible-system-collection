@@ -5,12 +5,12 @@
     - name: Install aptitude
       ansible.builtin.apt:
         name: aptitude
-        state: latest
+        state: present
         update_cache: true
     - name: Install Debian packages required for installation over HTTPS
       ansible.builtin.apt:
         name: "{{ packages }}"
-        state: latest
+        state: present
         update_cache: true
       vars:
         packages:

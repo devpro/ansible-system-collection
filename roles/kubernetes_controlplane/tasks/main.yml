@@ -2,7 +2,7 @@
 - name: Install PIP
   ansible.builtin.apt:
     name: python3-pip
-    state: latest
+    state: present
     update_cache: true
 
 - name: Install Python kubernetes module
@@ -41,9 +41,17 @@
   when: not kubeadm_ca.stat.exists
   register: kubeadm_init
 
-- name: Setup kubeconfig for {{ provisioning_username }} user
+- name: Create .kube directory for user {{ provisioning_username }}
+  ansible.builtin.file:
+    path: /home/{{ provisioning_username }}/.kube
+    state: directory
+    owner: "{{ provisioning_username }}"
+    group: docker
+    mode: "0750"
+  when: kubeadm_init.changed
+
+- name: Create kubeconfig for user {{ provisioning_username }}
   ansible.builtin.shell: |
-    mkdir -p /home/{{ provisioning_username }}/.kube
     cp -f /etc/kubernetes/admin.conf /home/{{ provisioning_username }}/.kube/config
     chown -R {{ provisioning_username }}:docker /home/{{ provisioning_username }}/.kube
   when: kubeadm_init.changed
@@ -77,4 +85,4 @@
 
 - name: Configure kubectl
   ansible.builtin.debug:
-    msg: "Edit ~/.kube/config with contents from ./admin.conf"
+    msg: "Edit ~/.kube/config with contents from ./admin.conf or call `kubectl get nodes --kubeconfig playbooks/admin.conf`"
