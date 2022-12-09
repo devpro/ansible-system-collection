@@ -43,15 +43,13 @@
           - containerd.io
       notify:
         - Start containerd
-    # commented as it makes kubeadmin stops with "[ERROR CRI]: container runtime is not running"
-    # - name: Create containerd config.toml
-    #   ansible.builtin.command:
-    #     cmd: |
-    #       containerd config default | sudo tee /etc/containerd/config.toml
-    #       sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
-    #     creates: /etc/containerd/config.toml
-    #   notify:
-    #     - Restart containerd
+    # fix: [ERROR CRI]: container runtime is not running
+    - name: Delete containerd etc config file CNI bin directory
+      ansible.builtin.file:
+        path: /etc/containerd/config.toml
+        state: absent
+      notify:
+        - Restart containerd
     - name: Create CNI bin directory
       ansible.builtin.file:
         path: /opt/cni/bin
@@ -67,3 +65,5 @@
         remote_src: "yes"
       notify:
         - Restart containerd
+    - name: Flush handlers
+      meta: flush_handlers
