@@ -1,7 +1,7 @@
 ---
 - name: Run kubelet installation
   ansible.builtin.include_role:
-    name: kubernetes_common
+    name: ../roles/kubernetes_common
     tasks_from: kubelet
 
 - name: Copy the join command to server location

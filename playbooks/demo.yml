@@ -1,0 +1,21 @@
+---
+- name: Demo
+  hosts: all
+  become: true
+  # roles:
+    # - ../roles/linux_server
+    # - ../roles/virtualbox
+    # - ../roles/vagrant
+    # - ../roles/vagrant_k8s
+    # - ../roles/vagrant_singlevm_ubuntu1804
+    # - ../roles/docker_engine
+    # - ../roles/kubernetes_controlplane
+    # - ../roles/kubernetes_node
+  tasks:
+    - name: Debug
+      ansible.builtin.debug:
+        var: ansible_user
+  #   - name: Run rollback
+  #     include_role:
+  #       name: ../roles/virtualbox
+  #       tasks_from: rollback

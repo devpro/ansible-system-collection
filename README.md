@@ -1,4 +1,4 @@
-# Rabbids Incubator Ansible Collection
+# Ansible System Collection
 
 [![GitLab Pipeline Status](https://gitlab.com/devpro-labs/ansible-system-collection/badges/main/pipeline.svg)](https://gitlab.com/devpro-labs/ansible-system-collection/-/pipelines)
 
@@ -26,7 +26,7 @@ Ansible playbook          | Action on the host
 `vagrant`                 | Install Vagrant
 `vagrant_k8s`             | Install Vagrant, provision VM and a create Kubernetes clusters
 
-* Make sure Ansible is installed and an inventory is defined
+* Make sure [Ansible is installed](https://docs.ansible.com/ansible/latest/installation_guide/index.html) and an inventory is defined
 
 * Download the collection from Artifactory and install it locally
 
@@ -56,7 +56,7 @@ ansible-playbook devpro.system.vagrant -i ./inventory --ask-become-pass
 
 ## How to contribute
 
-* Make sure Ansible is installed
+* Make sure [Ansible is installed](https://docs.ansible.com/ansible/latest/installation_guide/index.html)
 
 * Create local inventories for the tests
 
@@ -107,3 +107,17 @@ docker run -it --rm --name ansible-lint -v $PWD:$PWD --workdir $PWD pipelinecomp
 mkdir -p .gitlab/runner/local
 docker run --rm --name gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner -v $PWD:$PWD --workdir $PWD gitlab/gitlab-runner exec docker ci
 ```
+
+## References
+
+* [Kubernetes Setup Using Ansible and Vagrant](https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/) - March 15, 2019
+* [Ansible Collection structure](https://docs.ansible.com/ansible/latest/dev_guide/developing_collections_structure.html)
+* [Ansible MongoDB Communication Collection](https://github.com/ansible-collections/community.mongodb)
+* [Deploy a Kubernetes cluster using Ansible](https://buildvirtual.net/deploy-a-kubernetes-cluster-using-ansible/)
+* [MatTerra/ansiblekubernetes](https://github.com/MatTerra/ansiblekubernetes)
+* [kairen/kube-ansible](https://github.com/kairen/kube-ansible)
+* [How to Install Containerd Container Runtime on Ubuntu 22.04](https://www.howtoforge.com/how-to-install-containerd-container-runtime-on-ubuntu-22-04/)
+* [How to install cri-dockerd and migrate nodes from dockershim](https://www.mirantis.com/blog/how-to-install-cri-dockerd-and-migrate-nodes-from-dockershim/) - July 14, 2022
+* [How to Install CRI-O on Ubuntu 22.04 / Ubuntu 20.04](https://www.itzgeek.com/how-tos/linux/ubuntu-how-tos/install-cri-o-on-ubuntu-22-04.html) - Apr 30, 2022
+* [Deploying Kubernetes Cluster on Azure VMs using kubeadm, CNI and containerd](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/deploying-kubernetes-cluster-on-azure-vms-using-kubeadm-cni-and/ba-p/3690976) - December 06, 2022
+* [Installing and Configuring containerd as a Kubernetes Container Runtime](https://www.nocentino.com/posts/2021-12-27-installing-and-configuring-containerd-as-a-kubernetes-container-runtime/) - 2021-12-27

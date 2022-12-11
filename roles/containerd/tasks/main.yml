@@ -1,0 +1,69 @@
+---
+# https://kubernetes.io/docs/setup/production-environment/container-runtimes/
+# https://github.com/containerd/containerd/blob/main/docs/getting-started.md
+- name: Install containerd on Debian systems
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Load kernel modules
+      community.general.modprobe:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - overlay
+        - br_netfilter
+    - name: Make module loading persistent
+      ansible.builtin.template:
+        src: templates/containerd.conf.j2
+        dest: /etc/modules-load.d/containerd.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Reload sysctl
+    - name: Add an apt signing key for Docker
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add apt repository for stable version
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_version_name }} stable
+        state: present
+        filename: docker.list
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: "{{ provisioning_username }}"
+        group: docker
+    - name: Install containerd
+      ansible.builtin.apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: true
+      vars:
+        packages:
+          - containerd.io
+      notify:
+        - Start containerd
+    # fix: [ERROR CRI]: container runtime is not running
+    - name: Delete containerd etc config file CNI bin directory
+      ansible.builtin.file:
+        path: /etc/containerd/config.toml
+        state: absent
+      notify:
+        - Restart containerd
+    - name: Create CNI bin directory
+      ansible.builtin.file:
+        path: /opt/cni/bin
+        state: directory
+        owner: root
+        group: root
+        mode: "0775"
+    - name: Install the CNI plugin for the Containerd installation
+      ansible.builtin.unarchive:
+        # https://github.com/containernetworking/plugins/releases
+        src: https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
+        dest: /opt/cni/bin
+        remote_src: "yes"
+      notify:
+        - Restart containerd
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers

@@ -1,4 +1,6 @@
 ---
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
 - name: Remove swapfile from /etc/fstab
   ansible.posix.mount:
     name: "{{ item }}"
@@ -43,6 +45,8 @@
     owner: root
     group: root
     mode: "0644"
-
   notify:
-    - Run kubelet
+    - Restart kubelet
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

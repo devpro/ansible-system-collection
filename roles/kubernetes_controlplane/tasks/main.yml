@@ -1,20 +1,88 @@
 ---
+- name: Install PIP
+  ansible.builtin.apt:
+    name: python3-pip
+    state: present
+    update_cache: true
+
+- name: Install Python kubernetes module
+  ansible.builtin.pip:
+    name: kubernetes
+
+- name: Run kubelet installation
+  ansible.builtin.import_role:
+    name: ../roles/kubernetes_common
+    tasks_from: kubelet
+
+- name: Update hosts file
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: 127.0.0.1 k8s-controlenode
+    create: true
+    owner: root
+    group: root
+    mode: "0644"
+
 - name: Check if kubeadm has already run
   ansible.builtin.stat:
     path: "/etc/kubernetes/pki/ca.key"
   register: kubeadm_ca
 
-- name: Init cluster if needed
-  ansible.builtin.include_tasks: init.yml
+# tip: run sudo kubeadm reset to revert
+- name: Initialize the Kubernetes cluster using kubeadm
+  ansible.builtin.command:
+    cmd: >
+      kubeadm init
+      --apiserver-advertise-address="{{ kubernetes_controlnode_ip }}"
+      --apiserver-cert-extra-sans="{{ kubernetes_controlnode_ip }}"
+      --node-name k8s-controlenode
+      --pod-network-cidr={{ kubernetes_pod_network_cidr }}/16
+    creates: "/etc/kubernetes/kubelet.conf"
   when: not kubeadm_ca.stat.exists
+  register: kubeadm_init
+
+- name: Create .kube directory for user {{ provisioning_username }}
+  ansible.builtin.file:
+    path: /home/{{ provisioning_username }}/.kube
+    state: directory
+    owner: "{{ provisioning_username }}"
+    group: docker
+    mode: "0750"
+  when: kubeadm_init.changed
+
+- name: Create kubeconfig for user {{ provisioning_username }}
+  ansible.builtin.shell: |
+    cp -f /etc/kubernetes/admin.conf /home/{{ provisioning_username }}/.kube/config
+    chown -R {{ provisioning_username }}:docker /home/{{ provisioning_username }}/.kube
+  when: kubeadm_init.changed
+
+- name: Install Calico CNI plugin
+  ansible.builtin.include_tasks: calico.yml
+  when: kubeadm_init.changed
   run_once: true
+
+- name: Generate join command
+  ansible.builtin.command: kubeadm token create --print-join-command
+  register: join_command
+  changed_when: join_command.rc != 0
+  when: kubeadm_init.changed
+
+- name: Copy join command to local file
+  delegate_to: localhost
+  become: false
+  ansible.builtin.copy:
+    content: "{{ join_command.stdout_lines[0] }}"
+    dest: ./join-command.sh
+    mode: "0644"
+  when: kubeadm_init.changed
 
 - name: Copy kubernetes admin configuration file locally
   ansible.builtin.fetch:
     src: "/etc/kubernetes/admin.conf"
     dest: ./admin.conf
     flat: true
+  when: kubeadm_init.changed
 
 - name: Configure kubectl
   ansible.builtin.debug:
-    msg: "Edit ~/.kube/config with contents from ./admin.conf"
+    msg: "Edit ~/.kube/config with contents from ./admin.conf or call `kubectl get nodes --kubeconfig playbooks/admin.conf`"
